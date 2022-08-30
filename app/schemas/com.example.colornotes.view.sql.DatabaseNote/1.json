@@ -1,0 +1,96 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "0e6d2c971d4fdff80de3e019f3eae388",
+    "entities": [
+      {
+        "tableName": "notes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_note` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title_note` TEXT NOT NULL, `text_note` TEXT NOT NULL, `create_date` INTEGER NOT NULL, `color_id` INTEGER NOT NULL, FOREIGN KEY(`color_id`) REFERENCES `color_groups`(`id_color`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id_note",
+            "columnName": "id_note",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title_note",
+            "columnName": "title_note",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text_note",
+            "columnName": "text_note",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "create_note",
+            "columnName": "create_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color_id",
+            "columnName": "color_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_note"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "color_groups",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "color_id"
+            ],
+            "referencedColumns": [
+              "id_color"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "color_groups",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_color` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `index_color` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id_color",
+            "columnName": "id_color",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "index_color",
+            "columnName": "index_color",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id_color"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0e6d2c971d4fdff80de3e019f3eae388')"
+    ]
+  }
+}

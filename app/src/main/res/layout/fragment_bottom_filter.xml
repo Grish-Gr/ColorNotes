@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sort_filter_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sorting Filter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RadioGroup
+        android:checkedButton="@id/line_list_filter"
+        android:id="@+id/filter_view_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sort_filter_list"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="16dp">
+
+        <RadioButton
+            android:id="@+id/line_list_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_line_list_filter"
+            android:layout_marginEnd="32dp"/>
+
+        <RadioButton
+            android:id="@+id/line_list_all_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_line_all_list_filter"
+            android:layout_marginEnd="32dp"/>
+
+
+        <RadioButton
+            android:id="@+id/grid_list_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_grid_list_filter"/>
+    </RadioGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_group_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_view_list"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </com.google.android.material.chip.ChipGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
