@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.Widget.AppCompat.TextView.TitleNote" parent="Base.Widget.AppCompat.TextView">
+        <item name="android:text">@string/title_note</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="maxLines">1</item>
+        <item name="fontFamily">casual</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Base.Widget.AppCompat.TextView.TextNote" parent="Base.Widget.AppCompat.TextView">
+        <item name="android:text">@string/text_note</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="fontFamily">casual</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+</resources>

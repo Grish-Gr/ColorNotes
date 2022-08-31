@@ -4,4 +4,7 @@
     <string name="search">Search</string>
     <string name="description_fab_add_note">Add New Note</string>
     <string name="hint_title_note">Title Note</string>
+    <string name="title_note">Title Note</string>
+    <string name="text_note">On Android, coroutines help to manage long-running tasks that might otherwise block the main thread and cause your app to become unresponsive. Over 50% of professional developers who use coroutines have reported seeing increased productivity. This topic describes how you can use Kotlin coroutines to address these problems, enabling you to write cleaner and more concise app code.</string>
+    <string name="date_note">12.07.2022</string>
 </resources>
