@@ -2,6 +2,7 @@ package com.example.colornotes.view.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.text.DateFormat
 import java.util.*
 
 data class NoteData(
@@ -21,6 +22,8 @@ data class NoteData(
     }
 
     fun getDate(): Date = Date(createDate)
+    fun getDateByFormat(styleDateFormat: Int): String =
+        DateFormat.getDateInstance(styleDateFormat).format(getDate())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
