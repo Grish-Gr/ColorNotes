@@ -8,4 +8,10 @@ data class ColorGroupData(
 ){
 
     fun getColor(): Int = Color.parseColor(indexColor)
+
+    fun getAlphaColor(): Int = Color.parseColor(indexAlpha + indexColor)
+
+    companion object{
+        private const val indexAlpha = "38"
+    }
 }

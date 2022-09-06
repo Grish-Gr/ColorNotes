@@ -5,13 +5,13 @@
     <item
         android:title="@string/filter"
         android:icon="@drawable/ic_filter"
-        android:id="@+id/filter_notes"
+        android:id="@+id/item_menu_filter_notes"
         app:showAsAction="ifRoom"/>
 
     <item
         android:title="@string/search"
         android:icon="@drawable/ic_search"
-        android:id="@+id/search_notes"
+        android:id="@+id/item_menu_search_notes"
         app:showAsAction="ifRoom"/>
 
 </menu>
