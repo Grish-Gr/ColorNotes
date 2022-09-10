@@ -11,10 +11,20 @@ import com.example.colornotes.view.adapters.viewholders.GridHolder
 import com.example.colornotes.view.adapters.viewholders.LineHolder
 import com.example.colornotes.view.model.NoteData
 
+typealias ActionClick = (noteData: NoteData) -> Unit
+typealias ActionLongClick = (noteData: NoteData) -> Boolean
+
 class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
 
     private var listNoteData: MutableList<NoteData> = emptyList<NoteData>().toMutableList()
     private val typeHolder: TypeHolder = TYPE_ITEM_ALL_LINE
+    private var actionClick: ActionClick = { }
+    private var actionLongClick: ActionLongClick = { false }
+
+    fun setAction(actionClick: ActionClick, actionLongClick: ActionLongClick){
+        this.actionClick = actionClick
+        this.actionLongClick = actionLongClick
+    }
 
     fun setListNoteData(listNote: List<NoteData>){
         listNoteData.addAll(listNote)
@@ -32,16 +42,16 @@ class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
         notifyItemRemoved(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder = when(viewType as TypeHolder){
-        TYPE_ITEM_LINE -> LineHolder(LayoutInflater
-            .from(parent.context)
-            .inflate(TYPE_ITEM_LINE.resLayout, parent)
-        )
-        TYPE_ITEM_ALL_LINE -> AllLineHolder(LayoutInflater
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder = when(viewType){
+        TYPE_ITEM_LINE.ordinal -> {
+            val inflater = LayoutInflater.from(parent.context)
+            LineHolder(inflater.inflate(TYPE_ITEM_LINE.resLayout, parent, false))
+        }
+        TYPE_ITEM_ALL_LINE.ordinal -> AllLineHolder(LayoutInflater
             .from(parent.context)
             .inflate(TYPE_ITEM_ALL_LINE.resLayout, parent)
         )
-        TYPE_ITEM_GRID -> GridHolder(LayoutInflater
+        else -> GridHolder(LayoutInflater
             .from(parent.context)
             .inflate(TYPE_ITEM_GRID.resLayout, parent)
         )
@@ -49,6 +59,7 @@ class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.initView(listNoteData[position])
+        holder.initAction(listNoteData[position], actionClick, actionLongClick)
     }
 
     override fun getItemId(position: Int): Long = when(typeHolder){

@@ -1,11 +1,14 @@
-package com.example.colornotes.view.view
+package com.example.colornotes.view.view.fragments
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.colornotes.R
 import com.example.colornotes.databinding.FragmentMainBinding
 import com.example.colornotes.view.adapters.MainAdapter
@@ -27,33 +30,42 @@ class MainFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+        initActionView()
+        initLiveData()
     }
 
     private fun initRecyclerView(){
         val adapter = MainAdapter()
+        adapter.setAction({
+            openFragment(AddNoteFragment(), it)
+        }, {
+            false
+        })
+        binding.listNotes.adapter = adapter
+        binding.listNotes.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     }
 
     private fun initLiveData(){
         viewModel.listDataNote.observe(viewLifecycleOwner){
             (binding.listNotes.adapter as MainAdapter).setListNoteData(it)
-        }
-        viewModel.listColorGroup.observe(viewLifecycleOwner){
-
+            binding.progressDownloadNotes.visibility = View.INVISIBLE
         }
         viewModel.getListNote()
-        viewModel.getListColorGroup()
     }
 
-    private fun initToolBar(){
+    private fun initActionView(){
         binding.mainToolBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.item_menu_filter_notes -> {
                     showBottomFragment()
                     true
                 }
-
                 else -> false
             }
+        }
+        binding.addNote.setOnClickListener {
+            openFragment(AddNoteFragment())
         }
     }
 

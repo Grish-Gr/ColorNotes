@@ -20,7 +20,7 @@ object SqlRepository {
 
     suspend fun getListNoteData(vararg colorIdFilter: Int) : List<NoteData> =
         withContext(dispatchersIO){
-            databaseNote.getDao().getListNotesByColor(colorIdFilter = colorIdFilter)
+            databaseNote.getDao().getListNotesByColor()
                 .map { it.getNoteData() }
         }
 

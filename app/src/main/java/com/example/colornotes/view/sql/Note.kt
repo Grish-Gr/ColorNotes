@@ -29,7 +29,7 @@ data class Note(
     var create_note: Long,
 
     @ColumnInfo(name = "color_id")
-    var color_id: Int
+    var color_id: Long
 ){
     fun getNoteData(): NoteData = NoteData(
         id_note,

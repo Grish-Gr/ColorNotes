@@ -1,4 +1,4 @@
-package com.example.colornotes.view.view
+package com.example.colornotes.view.view.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -7,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.colornotes.databinding.FragmentBottomFilterBinding
-import com.example.colornotes.databinding.FragmentSettingsBinding
-import com.example.colornotes.view.adapters.TypeHolder
-import com.example.colornotes.view.viewmodels.ChipFactory
+import com.example.colornotes.view.view.ChipFactory
 import com.example.colornotes.view.viewmodels.FilterViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
 class FilterFragment: BottomSheetDialogFragment() {
 
@@ -32,7 +29,12 @@ class FilterFragment: BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.listGroup.observe(viewLifecycleOwner){
             it.map { colorGroupData ->
-                binding.filterGroupChip.addView(ChipFactory.getFilterChip(this.context as Context, colorGroupData))
+                binding.filterGroupChip.addView(
+                    ChipFactory.getChip(
+                        this.context as Context,
+                        colorGroupData
+                    )
+                )
             }
         }
     }

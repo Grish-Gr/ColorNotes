@@ -11,8 +11,8 @@ interface DaoNote {
     @Query("SELECT * FROM color_groups")
     suspend fun getColorGroups(): List<ColorGroup>
 
-    @Query("SELECT * FROM notes WHERE color_id IN (:colorIdFilter)")
-    suspend fun getListNotesByColor(vararg colorIdFilter: Int): List<Note>
+    @Query("SELECT * FROM notes")
+    suspend fun getListNotesByColor(): List<Note>
 
     @Update
     suspend fun updateNote(note: Note)

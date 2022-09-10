@@ -10,14 +10,14 @@ data class NoteData(
     var titleNote: String,
     var textNote: String,
     var createDate: Long,
-    var colorId: Int
+    var colorId: Long
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readLong(),
-        parcel.readInt()
+        parcel.readLong()
     ) {
     }
 
@@ -30,7 +30,7 @@ data class NoteData(
         parcel.writeString(titleNote)
         parcel.writeString(textNote)
         parcel.writeLong(createDate)
-        parcel.writeInt(colorId)
+        parcel.writeLong(colorId)
     }
 
     override fun describeContents(): Int {

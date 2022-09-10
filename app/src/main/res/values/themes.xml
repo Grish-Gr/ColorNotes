@@ -12,11 +12,15 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="cardViewStyle">@style/CardView.ItemNote</item>
+        <item name="cardViewStyle">@style/CardView.ItemNote</item><!--
+        <item name="chipStyle">@style/Base.Widget.MaterialComponents.Chip.Default</item>-->
     </style>
 
     <style name="CardView.ItemNote" parent="CardView">
         <item name="cardCornerRadius">8dp</item>
         <item name="android:layout_margin">4dp</item>
     </style>
+    <!--<style name="Base.Widget.MaterialComponents.Chip.Default" parent="Base.Widget.MaterialComponents.Chip">
+        <item name="chipStyle">Chip</item>
+    </style>-->
 </resources>

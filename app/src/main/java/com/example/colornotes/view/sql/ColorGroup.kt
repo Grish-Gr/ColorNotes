@@ -10,7 +10,7 @@ data class ColorGroup(
 
     @ColumnInfo(name = "id_color")
     @PrimaryKey(autoGenerate = true)
-    val id_color: Int,
+    val id_color: Long,
 
     @ColumnInfo(name = "index_color")
     val index_color: String

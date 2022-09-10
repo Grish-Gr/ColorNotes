@@ -33,7 +33,7 @@ class MainViewModel: ViewModel() {
     }
 
     fun getListNote(vararg colorIdFilter: Int) = viewModelScope.launch {
-        _listNote.postValue(SqlRepository.getListNoteData(colorIdFilter = colorIdFilter))
+        _listNote.postValue(SqlRepository.getListNoteData())
     }
 
     fun getListColorGroup() = viewModelScope.launch {

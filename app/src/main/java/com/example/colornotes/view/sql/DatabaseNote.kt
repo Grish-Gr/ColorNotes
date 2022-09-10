@@ -8,6 +8,6 @@ abstract class DatabaseNote: RoomDatabase() {
     abstract fun getDao(): DaoNote
 
     companion object{
-        const val pathToInitDatabase = "assets/init_note_database"
+        const val pathToInitDatabase = "init_database.db"
     }
 }
