@@ -1,5 +1,7 @@
 package com.example.colornotes.view.adapters.viewholders
 
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.view.View
 import com.example.colornotes.databinding.ItemGridBinding
 import com.example.colornotes.view.adapters.BaseViewHolder
@@ -13,11 +15,13 @@ class GridHolder(view: View): BaseViewHolder(view){
 
     init {
         binding = ItemGridBinding.bind(view)
+        layoutHolder = binding.cardLineItem
     }
 
     override fun initView(noteData: NoteData) {
         binding.titleNoteGridItem.text = noteData.titleNote
         binding.textNoteGridItem.text  = noteData.textNote
         binding.dateNoteGridItem.text  = noteData.getDateByFormat(DateFormat.DAY_OF_YEAR_FIELD)
+        binding.indicatorNoteGridItem.dividerColor = noteData.colorGroup.getColor()
     }
 }

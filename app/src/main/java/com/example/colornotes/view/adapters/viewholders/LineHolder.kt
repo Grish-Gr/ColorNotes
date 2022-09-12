@@ -10,10 +10,12 @@ class LineHolder(view: View): BaseViewHolder(view) {
 
     init {
         binding = ItemLineBinding.bind(view)
+        layoutHolder = binding.cardLineItem
     }
 
     override fun initView(noteData: NoteData) {
         binding.titleNoteLineItem.text = noteData.titleNote
         binding.textNoteLineItem.text  = noteData.textNote
+        binding.cardLineItem.setBackgroundColor(noteData.colorGroup.getAlphaColor())
     }
 }

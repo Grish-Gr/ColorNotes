@@ -31,13 +31,6 @@ data class Note(
     @ColumnInfo(name = "color_id")
     var color_id: Long
 ){
-    fun getNoteData(): NoteData = NoteData(
-        id_note,
-        title_note,
-        text_note,
-        create_note,
-        color_id
-    )
 
     companion object{
         fun convertToNote(noteData: NoteData): Note = with(noteData){
@@ -45,7 +38,7 @@ data class Note(
                 titleNote,
                 textNote,
                 createDate,
-                colorId
+                noteData.colorGroup.id
             )
         }
     }

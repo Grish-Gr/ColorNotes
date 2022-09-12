@@ -1,14 +1,15 @@
 package com.example.colornotes.view.view.fragments
 
-import android.opengl.Visibility
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.colornotes.R
 import com.example.colornotes.databinding.FragmentMainBinding
 import com.example.colornotes.view.adapters.MainAdapter
@@ -18,6 +19,11 @@ class MainFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getListNote()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +44,7 @@ class MainFragment: BaseFragment() {
     private fun initRecyclerView(){
         val adapter = MainAdapter()
         adapter.setAction({
-            openFragment(AddNoteFragment(), it)
+            openFragment(NoteFragment(), it)
         }, {
             false
         })
@@ -48,13 +54,14 @@ class MainFragment: BaseFragment() {
 
     private fun initLiveData(){
         viewModel.listDataNote.observe(viewLifecycleOwner){
+            Log.e("TAG", it.toString())
             (binding.listNotes.adapter as MainAdapter).setListNoteData(it)
             binding.progressDownloadNotes.visibility = View.INVISIBLE
         }
-        viewModel.getListNote()
     }
 
     private fun initActionView(){
+        Log.e("TAG", "Init Action")
         binding.mainToolBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.item_menu_filter_notes -> {
@@ -65,7 +72,7 @@ class MainFragment: BaseFragment() {
             }
         }
         binding.addNote.setOnClickListener {
-            openFragment(AddNoteFragment())
+            openFragment(NoteFragment())
         }
     }
 

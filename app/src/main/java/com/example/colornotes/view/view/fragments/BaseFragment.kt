@@ -2,6 +2,7 @@ package com.example.colornotes.view.view.fragments
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.colornotes.R
@@ -10,6 +11,7 @@ open class BaseFragment: Fragment() {
 
     protected fun openFragment(fragment: Fragment, parcelable: Parcelable? = null){
         if (parcelable != null){
+            Log.e("TAG", "Put parcelable")
             val bundle = Bundle()
             bundle.putParcelable(TAG_PUT_DATA, parcelable)
             fragment.arguments = bundle

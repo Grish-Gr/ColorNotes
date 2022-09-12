@@ -3,6 +3,7 @@ package com.example.colornotes.view.model
 import com.example.colornotes.view.sql.DatabaseNote
 import com.example.colornotes.view.sql.Note
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 
 object SqlRepository {
@@ -15,17 +16,42 @@ object SqlRepository {
     }
 
     suspend fun getListNoteData(): List<NoteData> = withContext(dispatchersIO){
-        databaseNote.getDao().getListNotes().map { it.getNoteData() }
+        databaseNote.getDao().getListNotes().reversed().map { note ->
+            val colorGroup = getColorGroupData(note.color_id)
+            with(note){
+                NoteData(
+                    id_note,
+                    title_note,
+                    text_note,
+                    create_note,
+                    colorGroup
+                )
+            }
+        }
     }
 
-    suspend fun getListNoteData(vararg colorIdFilter: Int) : List<NoteData> =
+    suspend fun getListNoteData(colorIdFilter: Long) : List<NoteData> =
         withContext(dispatchersIO){
-            databaseNote.getDao().getListNotesByColor()
-                .map { it.getNoteData() }
+            databaseNote.getDao().getListNotesByColor(colorIdFilter).reversed().map { note ->
+                val colorGroup = getColorGroupData(note.color_id)
+                with(note){
+                    NoteData(
+                        id_note,
+                        title_note,
+                        text_note,
+                        create_note,
+                        colorGroup
+                    )
+                }
+            }
         }
 
     suspend fun getListColorGroupData(): List<ColorGroupData> = withContext(dispatchersIO) {
         databaseNote.getDao().getColorGroups().map { it.getColorGroupData() }
+    }
+
+    suspend fun getColorGroupData(idColor: Long): ColorGroupData = withContext(dispatchersIO){
+        databaseNote.getDao().getColorGroup(idColor = idColor).getColorGroupData()
     }
 
     suspend fun createNoteData(noteData: NoteData) = withContext(dispatchersIO){
@@ -35,7 +61,6 @@ object SqlRepository {
     suspend fun updateNoteData(noteData: NoteData) = withContext(dispatchersIO){
         databaseNote.getDao().updateNote(Note.convertToNote(noteData))
     }
-
 
     suspend fun deleteNoteData(noteData: NoteData) = withContext(dispatchersIO){
         databaseNote.getDao().deleteNote(Note.convertToNote(noteData))

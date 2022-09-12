@@ -1,6 +1,7 @@
 package com.example.colornotes.view.sql
 
 import androidx.room.*
+import kotlinx.coroutines.Job
 
 @Dao
 interface DaoNote {
@@ -11,8 +12,11 @@ interface DaoNote {
     @Query("SELECT * FROM color_groups")
     suspend fun getColorGroups(): List<ColorGroup>
 
-    @Query("SELECT * FROM notes")
-    suspend fun getListNotesByColor(): List<Note>
+    @Query("SELECT * FROM notes WHERE color_id = :colorId")
+    suspend fun getListNotesByColor(colorId: Long): List<Note>
+
+    @Query("SELECT * FROM color_groups WHERE id_color = :idColor")
+    suspend fun getColorGroup(idColor: Long): ColorGroup
 
     @Update
     suspend fun updateNote(note: Note)

@@ -6,14 +6,16 @@ import com.example.colornotes.databinding.ItemGridBinding
 import com.example.colornotes.view.model.NoteData
 import java.text.DateFormat
 
-abstract class BaseViewHolder(private val view: View): RecyclerView.ViewHolder(view){
+abstract class BaseViewHolder(view: View): RecyclerView.ViewHolder(view){
+    protected var layoutHolder: View = view
+
     abstract fun initView(noteData: NoteData)
 
     fun initAction(noteData: NoteData, actionClick: ActionClick, actionLongClick: ActionLongClick){
-        view.setOnClickListener {
+        layoutHolder.setOnClickListener {
             actionClick(noteData)
         }
-        view.setOnLongClickListener{
+        layoutHolder.setOnLongClickListener{
             actionLongClick(noteData)
         }
     }
