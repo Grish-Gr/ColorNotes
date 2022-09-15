@@ -3,6 +3,9 @@ package com.example.colornotes.view.view.fragments
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.View
+import android.widget.PopupMenu
+import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.colornotes.R
@@ -24,9 +27,7 @@ open class BaseFragment: Fragment() {
     }
 
     protected fun backToParentFragment(){
-        parentFragmentManager.popBackStack(
-            TAG_DEFAULT_BACK_STACK,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        parentFragmentManager.popBackStack()
     }
 
     companion object{

@@ -23,8 +23,8 @@ class FilterViewModel: ViewModel() {
         filterData.filterSorting = filterSorting
     }
 
-    fun setFilterGroup(vararg filterGroup: Int){
-        filterData.filterGroup = filterGroup.toList()
+    fun setFilterGroup(filterGroup: Int){
+        filterData.filterGroup = filterGroup
     }
 
     fun getListGroup() = viewModelScope.launch {

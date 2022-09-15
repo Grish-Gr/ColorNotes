@@ -3,6 +3,7 @@ package com.example.colornotes.view.adapters
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.colornotes.R
@@ -13,14 +14,14 @@ import com.example.colornotes.view.adapters.viewholders.LineHolder
 import com.example.colornotes.view.model.NoteData
 
 typealias ActionClick = (noteData: NoteData) -> Unit
-typealias ActionLongClick = (noteData: NoteData) -> Boolean
+typealias ActionLongClick = (view: View, noteData: NoteData) -> Boolean
 
 class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
 
     private var listNoteData: MutableList<NoteData> = emptyList<NoteData>().toMutableList()
-    private val typeHolder: TypeHolder = TYPE_ITEM_ALL_LINE
+    private val typeHolder: TypeHolder = TYPE_ITEM_GRID
     private var actionClick: ActionClick = { }
-    private var actionLongClick: ActionLongClick = { false }
+    private var actionLongClick: ActionLongClick = { _, _ -> false }
 
     fun setAction(actionClick: ActionClick, actionLongClick: ActionLongClick){
         this.actionClick = actionClick
@@ -28,14 +29,10 @@ class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
     }
 
     fun setListNoteData(listNote: List<NoteData>){
+        Log.e("TAG", "Set List")
         listNoteData.clear()
         listNoteData.addAll(listNote)
         notifyDataSetChanged()
-    }
-
-    fun setNoteData(noteData: NoteData, position: Int = 0){
-        listNoteData.add(position, noteData)
-        notifyItemInserted(0)
     }
 
     fun deleteNoteData(noteData: NoteData){
@@ -45,7 +42,6 @@ class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder{
-        Log.e("TAG", viewType.toString())
         return when(viewType){
             TYPE_ITEM_LINE.ordinal -> {
                 LineHolder(LayoutInflater
@@ -76,7 +72,4 @@ class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
     }
 
     override fun getItemCount(): Int = listNoteData.size
-
-    private fun getPositionNote(noteData: NoteData): Int =
-        listNoteData.lastIndexOf(noteData)
 }

@@ -1,5 +1,6 @@
 package com.example.colornotes.view.model
 
+import android.util.Log
 import com.example.colornotes.view.sql.DatabaseNote
 import com.example.colornotes.view.sql.Note
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ object SqlRepository {
 
     suspend fun getListNoteData(): List<NoteData> = withContext(dispatchersIO){
         databaseNote.getDao().getListNotes().reversed().map { note ->
+            //Log.e("TAG", "Create Note with request ColorGroup")
             val colorGroup = getColorGroupData(note.color_id)
             with(note){
                 NoteData(
@@ -51,6 +53,7 @@ object SqlRepository {
     }
 
     suspend fun getColorGroupData(idColor: Long): ColorGroupData = withContext(dispatchersIO){
+        //Log.e("TAG", "Request Sql get ColorGroup")
         databaseNote.getDao().getColorGroup(idColor = idColor).getColorGroupData()
     }
 

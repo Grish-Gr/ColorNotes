@@ -16,7 +16,7 @@ abstract class BaseViewHolder(view: View): RecyclerView.ViewHolder(view){
             actionClick(noteData)
         }
         layoutHolder.setOnLongClickListener{
-            actionLongClick(noteData)
+            actionLongClick(it, noteData)
         }
     }
 }

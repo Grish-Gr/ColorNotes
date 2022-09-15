@@ -27,19 +27,20 @@ class FilterFragment: BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.listGroup.observe(viewLifecycleOwner){
-            it.map { colorGroupData ->
-                binding.filterGroupChip.addView(
-                    ChipFactory.getChip(
-                        this.context as Context,
-                        colorGroupData
-                    )
-                )
-            }
-        }
+        initLiveData()
+        viewModel.getListGroup()
     }
 
     private fun initView(){
+    }
+
+    private fun initLiveData(){
+        viewModel.listGroup.observe(viewLifecycleOwner){
+            it.map { groupData ->
+                binding.filterGroupChip.addView(
+                    ChipFactory.getChip(context as Context, groupData))
+            }
+        }
     }
 
     companion object{
