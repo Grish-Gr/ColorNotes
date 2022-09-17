@@ -19,7 +19,7 @@ typealias ActionLongClick = (view: View, noteData: NoteData) -> Boolean
 class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
 
     private var listNoteData: MutableList<NoteData> = emptyList<NoteData>().toMutableList()
-    private val typeHolder: TypeHolder = TYPE_ITEM_GRID
+    private var typeHolder: TypeHolder = TYPE_ITEM_LINE
     private var actionClick: ActionClick = { }
     private var actionLongClick: ActionLongClick = { _, _ -> false }
 
@@ -28,10 +28,17 @@ class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
         this.actionLongClick = actionLongClick
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setListNoteData(listNote: List<NoteData>){
         Log.e("TAG", "Set List")
         listNoteData.clear()
         listNoteData.addAll(listNote)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setTypeItem(typeHolder: TypeHolder){
+        this.typeHolder = typeHolder
         notifyDataSetChanged()
     }
 

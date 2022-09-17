@@ -11,25 +11,10 @@ import kotlinx.coroutines.launch
 
 class FilterViewModel: ViewModel() {
 
-    private var filterData = FilterData()
     private val _listGroup = MutableLiveData<List<ColorGroupData>>()
     val listGroup: LiveData<List<ColorGroupData>> = _listGroup
-
-    fun setFilterView(filterView: Int){
-        filterData.filterView = filterView
-    }
-
-    fun setFilterSorting(filterSorting: Int){
-        filterData.filterSorting = filterSorting
-    }
-
-    fun setFilterGroup(filterGroup: Int){
-        filterData.filterGroup = filterGroup
-    }
 
     fun getListGroup() = viewModelScope.launch {
         _listGroup.postValue(SqlRepository.getListColorGroupData())
     }
-
-    fun getFilterData() = filterData
 }

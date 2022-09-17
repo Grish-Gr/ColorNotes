@@ -47,7 +47,7 @@ class NoteFragment: BaseFragment() {
         }
         binding.successNote.setOnClickListener {
             lifecycleScope.launch {
-                val res = if (currentNoteData == null){
+                val job = if (currentNoteData == null){
                     viewModel.addNote(
                         getTitleNote(),
                         getTextNote(),
@@ -57,7 +57,7 @@ class NoteFragment: BaseFragment() {
                     currentNoteData?.textNote  = getTextNote()
                     viewModel.updateNote(currentNoteData!!, getCurrentColorGroup())
                 }
-                res.join()
+                job.join()
                 backToParentFragment()
             }
         }
