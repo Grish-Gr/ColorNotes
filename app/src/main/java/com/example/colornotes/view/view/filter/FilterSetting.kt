@@ -4,16 +4,15 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class FilterSetting(
-    val filterSorting: Int,
-    val filterView:    Int,
-    val filterGroup:   Long? = null
+    var filterSorting: Int,
+    var filterView:    Int,
+    var filterGroup:   Long? = null
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readValue(Long::class.java.classLoader) as? Long
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(filterSorting)
@@ -33,5 +32,8 @@ data class FilterSetting(
         override fun newArray(size: Int): Array<FilterSetting?> {
             return arrayOfNulls(size)
         }
+
+        fun getDefaultFilterSetting(): FilterSetting =
+            FilterSetting(0, 0, null)
     }
 }

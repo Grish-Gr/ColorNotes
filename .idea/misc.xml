@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/argen/.gradle/caches/transforms-3/9d6778b007a14e0c6659deb3da7018f2/transformed/material-1.6.1/res/layout/test_exposed_dropdown_menu.xml" value="0.4" />
         <entry key="..\:/Users/argen/.gradle/caches/transforms-3/fc1f82018352b0cb2503b51beb61b53f/transformed/appcompat-1.5.1/res/layout/abc_list_menu_item_layout.xml" value="0.6" />
+        <entry key="..\:/Users/argen/.gradle/caches/transforms-3/fc1f82018352b0cb2503b51beb61b53f/transformed/appcompat-1.5.1/res/layout/abc_search_dropdown_item_icons_2line.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/argen/.gradle/caches/transforms-3/fc1f82018352b0cb2503b51beb61b53f/transformed/appcompat-1.5.1/res/layout/support_simple_spinner_dropdown_item.xml" value="0.2" />
+        <entry key="..\:/Users/argen/AndroidStudioProjects/ColorNotes/app/src/main/res/drawable/back_spinner.xml" value="0.1495" />
         <entry key="..\:/Users/argen/AndroidStudioProjects/ColorNotes/app/src/main/res/drawable/ic_circle.xml" value="0.1495" />
         <entry key="..\:/Users/argen/AndroidStudioProjects/ColorNotes/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/argen/AndroidStudioProjects/ColorNotes/app/src/main/res/layout/fragment_bottom_filter.xml" value="0.264" />

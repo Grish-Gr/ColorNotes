@@ -83,7 +83,7 @@ class NoteFragment: BaseFragment() {
 
     private fun fillNoteFromBundle(bundle: Bundle){
         Log.e("TAG", "Fill Note")
-        val note: NoteData = bundle.getParcelable(TAG_PUT_DATA) ?: return
+        val note: NoteData = bundle.getParcelable(KEY_PUT_DATA) ?: return
         currentNoteData = note
         binding.inputTitleNote.editText?.setText(note.titleNote)
         binding.inputTextNote.setText(note.textNote)

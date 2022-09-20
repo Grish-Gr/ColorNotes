@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.PopupMenu
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import com.example.colornotes.R
 import com.example.colornotes.databinding.FragmentMainBinding
 import com.example.colornotes.view.adapters.MainAdapter
 import com.example.colornotes.view.adapters.TypeHolder
+import com.example.colornotes.view.adapters.TypeHolder.*
 import com.example.colornotes.view.model.NoteData
 import com.example.colornotes.view.view.filter.FilterSetting
 import com.example.colornotes.view.viewmodels.MainViewModel
@@ -23,6 +25,11 @@ class MainFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.filterSetting = getSaveFilterSetting()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,13 +44,14 @@ class MainFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initActionView()
         initRecyclerView()
+        initLayoutManager()
         initLiveData()
         Log.e("TAG", "onViewCreated")
         viewModel.getListNote()
     }
 
     private fun initRecyclerView(){
-        val adapter = MainAdapter()
+        val adapter = MainAdapter(viewModel.getFilterView())
         adapter.setAction({
             openFragment(NoteFragment(), it)
         }, { view, note ->
@@ -51,8 +59,18 @@ class MainFragment: BaseFragment() {
             true
         })
         binding.listNotes.adapter = adapter
-        //binding.listNotes.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.listNotes.layoutManager = StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+    }
+
+    private fun initLayoutManager(){
+        binding.listNotes.layoutManager = when (viewModel.getFilterView()){
+            TYPE_ITEM_LINE, TYPE_ITEM_ALL_LINE -> LinearLayoutManager(
+                this.context, RecyclerView.VERTICAL, false)
+            TYPE_ITEM_GRID -> StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+        }
+    }
+
+    private fun initViewHolders(){
+        (binding.listNotes.adapter as MainAdapter).setTypeItem(viewModel.getFilterView())
     }
 
     private fun initLiveData(){
@@ -68,7 +86,7 @@ class MainFragment: BaseFragment() {
         binding.mainToolBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.item_menu_filter_notes -> {
-                    showBottomFragment()
+                    showBottomFilerFragment()
                     true
                 }
                 else -> false
@@ -79,23 +97,13 @@ class MainFragment: BaseFragment() {
         }
     }
 
-    private fun showBottomFragment() {
-        val filterFragment = FilterFragment()
-        Log.e("TAG", "Create filter")
-        filterFragment.show(parentFragmentManager, FilterFragment.TAG_FILTER_FRAGMENT)
-        filterFragment.setFragmentResultListener(KEY_RESULT_FRAGMENT) { key, bundle ->
-            val filterSetting: FilterSetting? = bundle.getParcelable(FilterFragment.KEY_FILTER_FRAGMENT)
-            //TODO !Change RecyclerView!
-            /*(binding.listNotes.adapter as MainAdapter).setTypeItem(
-                TypeHolder.values().first {
-                    it.ordinal == filterSetting?.filterView
-                })
-            binding.listNotes.layoutManager = if (filterSetting?.filterView == 2){
-                 StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
-            } else {
-                LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
-            }*/
-            Log.e("TAG", filterSetting.toString())
+    private fun showBottomFilerFragment() {
+        openBottomFragment(FilterFragment(), viewModel.filterSetting) { _, bundle ->
+            val filterSetting: FilterSetting? =
+                bundle.getParcelable(FilterFragment.KEY_FILTER_FRAGMENT)
+            viewModel.filterSetting = filterSetting ?: FilterSetting.getDefaultFilterSetting()
+            initLayoutManager()
+            initViewHolders()
         }
     }
 
@@ -122,5 +130,6 @@ class MainFragment: BaseFragment() {
     override fun onStop() {
         super.onStop()
         viewModel.listDataNote.removeObservers(this.viewLifecycleOwner)
+        saveFilterSetting(viewModel.filterSetting)
     }
 }

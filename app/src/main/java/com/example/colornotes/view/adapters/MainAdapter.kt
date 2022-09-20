@@ -16,10 +16,9 @@ import com.example.colornotes.view.model.NoteData
 typealias ActionClick = (noteData: NoteData) -> Unit
 typealias ActionLongClick = (view: View, noteData: NoteData) -> Boolean
 
-class MainAdapter: RecyclerView.Adapter<BaseViewHolder>() {
+class MainAdapter(private var typeHolder: TypeHolder): RecyclerView.Adapter<BaseViewHolder>() {
 
     private var listNoteData: MutableList<NoteData> = emptyList<NoteData>().toMutableList()
-    private var typeHolder: TypeHolder = TYPE_ITEM_LINE
     private var actionClick: ActionClick = { }
     private var actionLongClick: ActionLongClick = { _, _ -> false }
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import androidx.core.view.get
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -38,6 +39,8 @@ class FilterFragment: BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val filterSetting = arguments?.getParcelable(BaseFragment.KEY_PUT_DATA)
+                            ?: FilterSetting.getDefaultFilterSetting()
         initSortingFilter()
         initLiveData()
         viewModel.getListGroup()
@@ -47,23 +50,8 @@ class FilterFragment: BottomSheetDialogFragment() {
         val adapter = ArrayAdapter<String>(
             this.context as Context,
             layout.support_simple_spinner_dropdown_item)
-        val listSoringFilters = SortingFilter.values().map { it.title }
-        adapter.addAll(listSoringFilters)
-        binding.sortFilterList.setAdapter(adapter)
-        //TODO !Get Selection Item!
-        /*binding.sortFilterList.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }*/
+        adapter.addAll(SortingFilter.values().map { it.title })
+        binding.spinnerSortFilter.adapter = adapter
     }
 
     private fun initLiveData(){
@@ -84,7 +72,7 @@ class FilterFragment: BottomSheetDialogFragment() {
 
     private fun getFilterSetting(): FilterSetting =
         FilterSetting(
-            binding.sortFilterList.listSelection,
+            getCurrentFilterSort(),
             getCurrentFilterView(),
             getCurrentFilterGroup()
         )
@@ -107,8 +95,9 @@ class FilterFragment: BottomSheetDialogFragment() {
         }
     }
 
+    private fun getCurrentFilterSort(): Int = binding.spinnerSortFilter.selectedItemPosition
+
     companion object{
-        const val TAG_FILTER_FRAGMENT = "TagFilterFragment"
         const val KEY_FILTER_FRAGMENT = "KeyFilterFragment"
     }
 }
