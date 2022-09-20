@@ -15,6 +15,7 @@ import java.util.*
 
 class NoteViewModel: ViewModel() {
 
+    private var currentNoteData: NoteData? = null
     private val _listGroup = MutableLiveData<List<ColorGroupData>>()
     val listGroup: LiveData<List<ColorGroupData>> = _listGroup
 

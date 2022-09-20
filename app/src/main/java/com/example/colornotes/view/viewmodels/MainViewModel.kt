@@ -31,11 +31,13 @@ class MainViewModel: ViewModel() {
         SqlRepository.deleteNoteData(noteData)
     }
 
+    // region TODO One fun getList with check on null colorIdFilter
     fun getListNote() = viewModelScope.launch {
         _listNote.postValue(SqlRepository.getListNoteData())
     }
 
-    fun getListNote(vararg colorIdFilter: Int) = viewModelScope.launch {
+    fun getListNote(colorIdFilter: Int) = viewModelScope.launch {
         _listNote.postValue(SqlRepository.getListNoteData())
     }
+    //endregion
 }

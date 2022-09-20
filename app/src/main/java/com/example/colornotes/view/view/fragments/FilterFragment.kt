@@ -41,9 +41,11 @@ class FilterFragment: BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val filterSetting = arguments?.getParcelable(BaseFragment.KEY_PUT_DATA)
                             ?: FilterSetting.getDefaultFilterSetting()
+        viewModel.filterSetting = filterSetting
         initSortingFilter()
         initLiveData()
         viewModel.getListGroup()
+        fillFilterSetting()
     }
 
     private fun initSortingFilter(){
@@ -60,7 +62,13 @@ class FilterFragment: BottomSheetDialogFragment() {
                 binding.filterGroupChip.addView(
                     ChipFactory.getChip(context as Context, groupData))
             }
+            binding.filterGroupChip.check(viewModel.filterSetting.filterGroup?.toInt() ?: ChipFactory.DefaultId)
         }
+    }
+
+    private fun fillFilterSetting(){
+        binding.spinnerSortFilter.setSelection(viewModel.filterSetting.filterSorting)
+        binding.filterViewList.check(getIdButtonFilterView(viewModel.filterSetting.filterView))
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -77,6 +85,7 @@ class FilterFragment: BottomSheetDialogFragment() {
             getCurrentFilterGroup()
         )
 
+    //region TODO This in Sealed or Enum class
     private fun getCurrentFilterView(): Int{
         return when(binding.filterViewList.checkedRadioButtonId){
             R.id.line_list_filter -> 0
@@ -86,9 +95,16 @@ class FilterFragment: BottomSheetDialogFragment() {
         }
     }
 
+    private fun getIdButtonFilterView(filterView: Int): Int = when(filterView){
+        0 -> R.id.line_list_filter
+        1 -> R.id.line_list_all_filter
+        else -> R.id.grid_list_filter
+    }
+    //endregion
+
     private fun getCurrentFilterGroup(): Long?{
         val indexCheckGroup = binding.filterGroupChip.checkedChipId
-        return if (indexCheckGroup == -1){
+        return if (indexCheckGroup == View.NO_ID){
             null
         } else {
             binding.filterGroupChip[indexCheckGroup].tag as Long

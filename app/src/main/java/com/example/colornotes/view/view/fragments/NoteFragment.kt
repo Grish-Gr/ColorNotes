@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 
 class NoteFragment: BaseFragment() {
 
+    // TODO remove noteData
     private var currentNoteData: NoteData? = null
     private lateinit var binding: FragmentNoteBinding
     private val viewModel: NoteViewModel by viewModels()
@@ -37,6 +38,7 @@ class NoteFragment: BaseFragment() {
         initLiveData()
         viewModel.getListGroup()
         Log.e("TAG", savedInstanceState.toString())
+        // TODO Check on null. Remove?
         if (arguments != null)
             fillNoteFromBundle(arguments as Bundle)
     }
@@ -74,17 +76,15 @@ class NoteFragment: BaseFragment() {
             binding.filterGroupChip.addView(
                 ChipFactory.getChip(this.context as Context, colorGroup))
         }
-        if (currentNoteData == null){
-            binding.filterGroupChip.check(ChipFactory.DefaultId)
-        } else {
-            binding.filterGroupChip.check(currentNoteData!!.id.toInt())
-        }
     }
 
+    // TODO bundle remove put dataNote in viewModel
     private fun fillNoteFromBundle(bundle: Bundle){
         Log.e("TAG", "Fill Note")
         val note: NoteData = bundle.getParcelable(KEY_PUT_DATA) ?: return
         currentNoteData = note
+        // TODO CurrentNoteData in viewModel
+        binding.filterGroupChip.check(currentNoteData?.colorGroup?.id?.toInt() ?: ChipFactory.DefaultId)
         binding.inputTitleNote.editText?.setText(note.titleNote)
         binding.inputTextNote.setText(note.textNote)
     }
