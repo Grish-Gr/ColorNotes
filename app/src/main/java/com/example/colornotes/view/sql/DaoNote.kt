@@ -6,7 +6,7 @@ import kotlinx.coroutines.Job
 @Dao
 interface DaoNote {
 
-    @Query("SELECT * FROM notes")
+    @Query("SELECT * FROM notes ORDER BY create_date")
     suspend fun getListNotes(): List<Note>
 
     @Query("SELECT * FROM color_groups")

@@ -2,9 +2,11 @@ package com.example.colornotes.view.view.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResultListener
@@ -16,7 +18,6 @@ open class BaseFragment: Fragment() {
 
     protected fun openFragment(fragment: Fragment, parcelable: Parcelable? = null){
         if (parcelable != null){
-            Log.e("TAG", "Put parcelable")
             val bundle = Bundle()
             bundle.putParcelable(KEY_PUT_DATA, parcelable)
             fragment.arguments = bundle
@@ -47,8 +48,18 @@ open class BaseFragment: Fragment() {
         )
     }
 
+    protected fun changeThemeApp(){
+        if (isNightMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        saveTheme()
+    }
+
     @SuppressLint("CommitPrefEdits")
     protected fun getSaveFilterSetting(): FilterSetting{
+        // TODO Add Default value!
         val sharedPreference = activity?.getSharedPreferences(NAME_SHARED_PREFERENCE, Context.MODE_PRIVATE)
         val filterSorting = sharedPreference?.getInt(KEY_EDIT_FILTER_SORTING, 0) ?: 0
         val filterView = sharedPreference?.getInt(KEY_EDIT_FILTER_VIEW, 0) ?: 0
@@ -65,11 +76,24 @@ open class BaseFragment: Fragment() {
         val edit = sharedPreference?.edit()
         with(filterSetting){
             Log.e("TAG", this.toString())
-            edit?.putInt(KEY_EDIT_FILTER_SORTING, filterSorting)
-            edit?.putInt(KEY_EDIT_FILTER_VIEW, filterView)
+            edit?.putInt(KEY_EDIT_FILTER_SORTING, ordinalSortFilter)
+            edit?.putInt(KEY_EDIT_FILTER_VIEW, ordinalViewFilter)
             edit?.putLong(KEY_EDIT_FILTER_GROUP, filterGroup ?: -1)
             edit?.apply()
         }
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    protected fun saveTheme(){
+        val sharedPreference = activity?.getSharedPreferences(NAME_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+        val edit = sharedPreference?.edit()
+        edit?.putBoolean(KEY_EDIT_IS_NIGHT_MODE, !isNightMode())
+        edit?.apply()
+    }
+
+    private fun isNightMode(): Boolean = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+        Configuration.UI_MODE_NIGHT_YES -> true
+        else -> false
     }
 
     companion object{
@@ -79,6 +103,8 @@ open class BaseFragment: Fragment() {
         const val TAG_DEFAULT_SHOW_FRAGMENT = "DefaultTagShowFragment"
 
         const val NAME_SHARED_PREFERENCE = "DefaultNameSharedPreference"
+        const val KEY_EDIT_IS_NIGHT_MODE = "DefaultKeyIsNightMode"
+        const val KEY_EDIT_THEME_MODE = "DefaultKeyThemeMode"
         const val KEY_EDIT_FILTER_SORTING = "DefaultKeyEditFilterSorting"
         const val KEY_EDIT_FILTER_VIEW = "DefaultKeyEditFilterView"
         const val KEY_EDIT_FILTER_GROUP = "DefaultKeyEditFilterGroup"

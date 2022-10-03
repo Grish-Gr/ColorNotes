@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.colornotes.view.model.ColorGroupData
 import com.example.colornotes.view.model.NoteData
 import com.example.colornotes.view.model.SqlRepository
+import com.example.colornotes.view.view.ChipFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -15,7 +16,7 @@ import java.util.*
 
 class NoteViewModel: ViewModel() {
 
-    private var currentNoteData: NoteData? = null
+    var currentNoteData: NoteData? = null
     private val _listGroup = MutableLiveData<List<ColorGroupData>>()
     val listGroup: LiveData<List<ColorGroupData>> = _listGroup
 
@@ -48,6 +49,9 @@ class NoteViewModel: ViewModel() {
     fun getListGroup() = viewModelScope.launch {
         _listGroup.postValue(SqlRepository.getListColorGroupData())
     }
+
+    fun getIdColorGroup(): Int =
+        currentNoteData?.colorGroup?.id?.toInt() ?: ChipFactory.DefaultId
 
     private suspend fun getColorGroup(idColorGroup: Long): ColorGroupData =
         withContext(viewModelScope.coroutineContext) {

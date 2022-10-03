@@ -15,7 +15,7 @@ class GridHolder(view: View): BaseViewHolder(view){
 
     init {
         binding = ItemGridBinding.bind(view)
-        layoutHolder = binding.cardLineItem
+        layoutHolder = binding.cardGridItem
     }
 
     override fun initView(noteData: NoteData) {

@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="@string/filter"
-        android:icon="@drawable/ic_filter"
-        android:id="@+id/item_menu_filter_notes"
+        android:id="@+id/item_change_theme_app"
+        android:title="@string/change_theme"
+        android:icon="@drawable/ic_sun"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:title="@string/search"
-        android:icon="@drawable/ic_search"
-        android:id="@+id/item_menu_search_notes"
+        android:id="@+id/item_menu_filter_notes"
+        android:title="@string/filter"
+        android:icon="@drawable/ic_filter"
         app:showAsAction="ifRoom"/>
 
 </menu>

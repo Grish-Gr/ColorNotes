@@ -16,6 +16,6 @@ class LineHolder(view: View): BaseViewHolder(view) {
     override fun initView(noteData: NoteData) {
         binding.titleNoteLineItem.text = noteData.titleNote
         binding.textNoteLineItem.text  = noteData.textNote
-        binding.cardLineItem.setBackgroundColor(noteData.colorGroup.getAlphaColor())
+        binding.layoutLineItem.setBackgroundColor(noteData.colorGroup.getAlphaColor())
     }
 }

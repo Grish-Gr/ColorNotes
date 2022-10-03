@@ -1,13 +1,10 @@
 package com.example.colornotes.view.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
 import android.widget.PopupMenu
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +12,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.colornotes.R
 import com.example.colornotes.databinding.FragmentMainBinding
 import com.example.colornotes.view.adapters.MainAdapter
-import com.example.colornotes.view.adapters.TypeHolder
 import com.example.colornotes.view.adapters.TypeHolder.*
 import com.example.colornotes.view.model.NoteData
 import com.example.colornotes.view.view.filter.FilterSetting
@@ -42,12 +38,12 @@ class MainFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //saveTheme()
         initActionView()
         initRecyclerView()
         initLayoutManager()
         initLiveData()
-        Log.e("TAG", "onViewCreated")
-        viewModel.getListNote()
+        getListNotesByViewModel()
     }
 
     private fun initRecyclerView(){
@@ -75,18 +71,20 @@ class MainFragment: BaseFragment() {
 
     private fun initLiveData(){
         viewModel.listDataNote.observe(this.viewLifecycleOwner){
-            Log.e("TAG", it.toString())
             (binding.listNotes.adapter as MainAdapter).setListNoteData(it)
             binding.progressDownloadNotes.visibility = View.INVISIBLE
         }
     }
 
     private fun initActionView(){
-        Log.e("TAG", "Init Action")
         binding.mainToolBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.item_menu_filter_notes -> {
                     showBottomFilerFragment()
+                    true
+                }
+                R.id.item_change_theme_app -> {
+                    changeThemeApp()
                     true
                 }
                 else -> false
@@ -102,6 +100,7 @@ class MainFragment: BaseFragment() {
             val filterSetting: FilterSetting? =
                 bundle.getParcelable(FilterFragment.KEY_FILTER_FRAGMENT)
             viewModel.filterSetting = filterSetting ?: FilterSetting.getDefaultFilterSetting()
+            getListNotesByViewModel()
             initLayoutManager()
             initViewHolders()
         }
@@ -127,9 +126,14 @@ class MainFragment: BaseFragment() {
         popupMenu.show()
     }
 
+    private fun getListNotesByViewModel() =
+        viewModel.getListNote(
+            viewModel.filterSetting.filterGroup,
+            viewModel.filterSetting.byEarly())
+
     override fun onStop() {
-        super.onStop()
-        viewModel.listDataNote.removeObservers(this.viewLifecycleOwner)
+        viewModel.listDataNote.removeObservers(viewLifecycleOwner)
         saveFilterSetting(viewModel.filterSetting)
+        super.onStop()
     }
 }

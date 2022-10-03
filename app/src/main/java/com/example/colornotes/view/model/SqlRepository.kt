@@ -16,9 +16,8 @@ object SqlRepository {
         databaseNote = database
     }
 
-    suspend fun getListNoteData(): List<NoteData> = withContext(dispatchersIO){
-        databaseNote.getDao().getListNotes().reversed().map { note ->
-            //Log.e("TAG", "Create Note with request ColorGroup")
+    suspend fun getListNoteData(byEarly: Boolean): List<NoteData> = withContext(dispatchersIO){
+        val list = databaseNote.getDao().getListNotes().map { note ->
             val colorGroup = getColorGroupData(note.color_id)
             with(note){
                 NoteData(
@@ -30,23 +29,24 @@ object SqlRepository {
                 )
             }
         }
+        return@withContext if (byEarly) list.reversed() else list
     }
 
-    suspend fun getListNoteData(colorIdFilter: Long) : List<NoteData> =
-        withContext(dispatchersIO){
-            databaseNote.getDao().getListNotesByColor(colorIdFilter).reversed().map { note ->
-                val colorGroup = getColorGroupData(note.color_id)
-                with(note){
-                    NoteData(
-                        id_note,
-                        title_note,
-                        text_note,
-                        create_note,
-                        colorGroup
-                    )
-                }
+    suspend fun getListNoteData(colorIdFilter: Long, byEarly: Boolean) : List<NoteData> = withContext(dispatchersIO){
+        val list = databaseNote.getDao().getListNotesByColor(colorIdFilter).map { note ->
+            val colorGroup = getColorGroupData(note.color_id)
+            with(note){
+                NoteData(
+                    id_note,
+                    title_note,
+                    text_note,
+                    create_note,
+                    colorGroup
+                )
             }
         }
+        return@withContext if (byEarly) list.reversed() else list
+    }
 
     suspend fun getListColorGroupData(): List<ColorGroupData> = withContext(dispatchersIO) {
         databaseNote.getDao().getColorGroups().map { it.getColorGroupData() }

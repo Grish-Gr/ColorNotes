@@ -1,11 +1,14 @@
 package com.example.colornotes.view.view.fragments
 
 import android.content.Context
+import android.nfc.Tag
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,12 +17,11 @@ import com.example.colornotes.view.model.ColorGroupData
 import com.example.colornotes.view.model.NoteData
 import com.example.colornotes.view.view.ChipFactory
 import com.example.colornotes.view.viewmodels.NoteViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class NoteFragment: BaseFragment() {
 
-    // TODO remove noteData
-    private var currentNoteData: NoteData? = null
     private lateinit var binding: FragmentNoteBinding
     private val viewModel: NoteViewModel by viewModels()
 
@@ -37,8 +39,6 @@ class NoteFragment: BaseFragment() {
         initActionView()
         initLiveData()
         viewModel.getListGroup()
-        Log.e("TAG", savedInstanceState.toString())
-        // TODO Check on null. Remove?
         if (arguments != null)
             fillNoteFromBundle(arguments as Bundle)
     }
@@ -49,17 +49,21 @@ class NoteFragment: BaseFragment() {
         }
         binding.successNote.setOnClickListener {
             lifecycleScope.launch {
-                val job = if (currentNoteData == null){
+                if (getCurrentColorGroup() == -1L){
+                    showToast("Choose Color")
+                    return@launch
+                }
+
+                if (viewModel.currentNoteData == null){
                     viewModel.addNote(
                         getTitleNote(),
                         getTextNote(),
                         getCurrentColorGroup())
                 } else {
-                    currentNoteData?.titleNote = getTitleNote()
-                    currentNoteData?.textNote  = getTextNote()
-                    viewModel.updateNote(currentNoteData!!, getCurrentColorGroup())
-                }
-                job.join()
+                    viewModel.currentNoteData?.titleNote = getTitleNote()
+                    viewModel.currentNoteData?.textNote  = getTextNote()
+                    viewModel.updateNote(viewModel.currentNoteData!!, getCurrentColorGroup())
+                }.join()
                 backToParentFragment()
             }
         }
@@ -76,21 +80,29 @@ class NoteFragment: BaseFragment() {
             binding.filterGroupChip.addView(
                 ChipFactory.getChip(this.context as Context, colorGroup))
         }
+        if (viewModel.currentNoteData?.colorGroup?.id != null)
+            binding.filterGroupChip.check(viewModel.currentNoteData?.colorGroup?.id!!.toInt())
     }
 
-    // TODO bundle remove put dataNote in viewModel
+    private fun showToast(message: String) =
+        Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
+
     private fun fillNoteFromBundle(bundle: Bundle){
-        Log.e("TAG", "Fill Note")
         val note: NoteData = bundle.getParcelable(KEY_PUT_DATA) ?: return
-        currentNoteData = note
-        // TODO CurrentNoteData in viewModel
-        binding.filterGroupChip.check(currentNoteData?.colorGroup?.id?.toInt() ?: ChipFactory.DefaultId)
-        binding.inputTitleNote.editText?.setText(note.titleNote)
-        binding.inputTextNote.setText(note.textNote)
+        viewModel.currentNoteData = note
+        binding.filterGroupChip.check(viewModel.getIdColorGroup())
+        binding.inputTitleNote.editText?.setText(viewModel.currentNoteData?.titleNote)
+        binding.inputTextNote.setText(viewModel.currentNoteData?.textNote)
     }
 
-    private fun getCurrentColorGroup(): Long =
-        binding.filterGroupChip[binding.filterGroupChip.checkedChipId].tag as Long
+    private fun getCurrentColorGroup(): Long {
+        val idChip = binding.filterGroupChip.checkedChipId
+        return if (idChip == View.NO_ID){
+            -1
+        } else {
+            binding.filterGroupChip[binding.filterGroupChip.checkedChipId].tag as Long
+        }
+    }
     private fun getTitleNote(): String = binding.inputTitleNote.editText?.text.toString()
     private fun getTextNote(): String = binding.inputTextNote.text.toString()
 }

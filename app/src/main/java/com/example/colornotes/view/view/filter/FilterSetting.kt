@@ -4,9 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class FilterSetting(
-    var filterSorting: Int,
-    var filterView:    Int,
-    var filterGroup:   Long? = null
+    var ordinalSortFilter: Int,
+    var ordinalViewFilter: Int,
+    var filterGroup: Long? = null
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -15,14 +15,16 @@ data class FilterSetting(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(filterSorting)
-        parcel.writeInt(filterView)
+        parcel.writeInt(ordinalSortFilter)
+        parcel.writeInt(ordinalViewFilter)
         parcel.writeValue(filterGroup)
     }
 
     override fun describeContents(): Int {
         return 0
     }
+
+    fun byEarly(): Boolean = ordinalSortFilter == 0
 
     companion object CREATOR : Parcelable.Creator<FilterSetting> {
         override fun createFromParcel(parcel: Parcel): FilterSetting {

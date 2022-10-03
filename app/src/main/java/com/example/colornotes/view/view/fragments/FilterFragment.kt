@@ -3,22 +3,18 @@ package com.example.colornotes.view.view.fragments
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import androidx.core.view.get
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import com.example.colornotes.R
 import com.example.colornotes.databinding.FragmentBottomFilterBinding
 import com.example.colornotes.view.view.ChipFactory
 import com.example.colornotes.view.view.filter.FilterSetting
-import com.example.colornotes.view.view.filter.SortingFilter
+import com.example.colornotes.view.view.filter.SortFilter
+import com.example.colornotes.view.view.filter.ViewFilter
 import com.example.colornotes.view.viewmodels.FilterViewModel
 import com.google.android.material.R.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -52,23 +48,25 @@ class FilterFragment: BottomSheetDialogFragment() {
         val adapter = ArrayAdapter<String>(
             this.context as Context,
             layout.support_simple_spinner_dropdown_item)
-        adapter.addAll(SortingFilter.values().map { it.title })
+        adapter.addAll(SortFilter.values().map { it.title })
         binding.spinnerSortFilter.adapter = adapter
     }
 
     private fun initLiveData(){
         viewModel.listGroup.observe(viewLifecycleOwner){
+            binding.filterGroupChip.removeAllViews()
             it.map { groupData ->
                 binding.filterGroupChip.addView(
                     ChipFactory.getChip(context as Context, groupData))
             }
-            binding.filterGroupChip.check(viewModel.filterSetting.filterGroup?.toInt() ?: ChipFactory.DefaultId)
+            if (viewModel.filterSetting.filterGroup != null)
+                binding.filterGroupChip.check(viewModel.filterSetting.filterGroup?.toInt()!!)
         }
     }
 
     private fun fillFilterSetting(){
-        binding.spinnerSortFilter.setSelection(viewModel.filterSetting.filterSorting)
-        binding.filterViewList.check(getIdButtonFilterView(viewModel.filterSetting.filterView))
+        binding.spinnerSortFilter.setSelection(viewModel.filterSetting.ordinalSortFilter)
+        binding.filterViewList.check(getIdButtonFilterView(viewModel.filterSetting.ordinalViewFilter))
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -81,26 +79,9 @@ class FilterFragment: BottomSheetDialogFragment() {
     private fun getFilterSetting(): FilterSetting =
         FilterSetting(
             getCurrentFilterSort(),
-            getCurrentFilterView(),
+            getCurrentFilterView().ordinal,
             getCurrentFilterGroup()
         )
-
-    //region TODO This in Sealed or Enum class
-    private fun getCurrentFilterView(): Int{
-        return when(binding.filterViewList.checkedRadioButtonId){
-            R.id.line_list_filter -> 0
-            R.id.line_list_all_filter -> 1
-            R.id.grid_list_filter -> 2
-            else -> -1
-        }
-    }
-
-    private fun getIdButtonFilterView(filterView: Int): Int = when(filterView){
-        0 -> R.id.line_list_filter
-        1 -> R.id.line_list_all_filter
-        else -> R.id.grid_list_filter
-    }
-    //endregion
 
     private fun getCurrentFilterGroup(): Long?{
         val indexCheckGroup = binding.filterGroupChip.checkedChipId
@@ -110,6 +91,12 @@ class FilterFragment: BottomSheetDialogFragment() {
             binding.filterGroupChip[indexCheckGroup].tag as Long
         }
     }
+
+    private fun getCurrentFilterView(): ViewFilter =
+        ViewFilter.getViewFilter(binding.filterViewList.checkedRadioButtonId)
+
+    private fun getIdButtonFilterView(ordinalViewFilter: Int): Int =
+        ViewFilter.getViewFilterByOrdinal(ordinalViewFilter).idButton
 
     private fun getCurrentFilterSort(): Int = binding.spinnerSortFilter.selectedItemPosition
 

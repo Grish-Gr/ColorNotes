@@ -1,5 +1,6 @@
 package com.example.colornotes.view.adapters
 
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.colornotes.databinding.ItemGridBinding

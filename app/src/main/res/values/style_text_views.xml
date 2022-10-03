@@ -4,7 +4,6 @@
     <style name="Base.Widget.AppCompat.TextView.TitleNote" parent="Base.Widget.AppCompat.TextView">
         <item name="android:text">@string/title_note</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/black</item>
         <item name="maxLines">1</item>
         <item name="android:lines">1</item>
         <item name="android:textSize">20sp</item>
@@ -13,7 +12,6 @@
     <style name="Base.Widget.AppCompat.TextView.TextNote" parent="Base.Widget.AppCompat.TextView">
         <item name="android:text">@string/text_note</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">14sp</item>
     </style>
 
