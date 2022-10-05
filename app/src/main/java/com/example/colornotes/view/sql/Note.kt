@@ -1,17 +1,18 @@
 package com.example.colornotes.view.sql
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import com.example.colornotes.view.model.NoteData
 
 @Entity(
     tableName = "notes",
+    indices = [Index(value = ["color_id"])],
     foreignKeys = [ForeignKey(
         entity = ColorGroup::class,
         parentColumns = ["id_color"],
-        childColumns = ["color_id"]
+        childColumns = ["color_id"],
+        onDelete = CASCADE,
+        onUpdate = CASCADE
     )])
 data class Note(
 

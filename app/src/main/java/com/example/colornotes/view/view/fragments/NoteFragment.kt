@@ -1,10 +1,6 @@
 package com.example.colornotes.view.view.fragments
 
-import android.content.Context
-import android.nfc.Tag
 import android.os.Bundle
-import android.os.Message
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +8,11 @@ import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.colornotes.R
 import com.example.colornotes.databinding.FragmentNoteBinding
 import com.example.colornotes.view.model.ColorGroupData
 import com.example.colornotes.view.model.NoteData
-import com.example.colornotes.view.view.ChipFactory
 import com.example.colornotes.view.viewmodels.NoteViewModel
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class NoteFragment: BaseFragment() {
@@ -49,7 +44,8 @@ class NoteFragment: BaseFragment() {
         }
         binding.successNote.setOnClickListener {
             lifecycleScope.launch {
-                if (getCurrentColorGroup() == -1L){
+                val currentColorGroup = getCurrentColorGroup()
+                if (currentColorGroup == null){
                     showToast("Choose Color")
                     return@launch
                 }
@@ -58,11 +54,11 @@ class NoteFragment: BaseFragment() {
                     viewModel.addNote(
                         getTitleNote(),
                         getTextNote(),
-                        getCurrentColorGroup())
+                        currentColorGroup.id)
                 } else {
                     viewModel.currentNoteData?.titleNote = getTitleNote()
                     viewModel.currentNoteData?.textNote  = getTextNote()
-                    viewModel.updateNote(viewModel.currentNoteData!!, getCurrentColorGroup())
+                    viewModel.updateNote(viewModel.currentNoteData!!, currentColorGroup.id)
                 }.join()
                 backToParentFragment()
             }
@@ -77,8 +73,7 @@ class NoteFragment: BaseFragment() {
 
     private fun initChipGroup(listGroup: List<ColorGroupData>){
         listGroup.map { colorGroup ->
-            binding.filterGroupChip.addView(
-                ChipFactory.getChip(this.context as Context, colorGroup))
+            binding.filterGroupChip.addView(getColorGroupChip(colorGroup))
         }
         if (viewModel.currentNoteData?.colorGroup?.id != null)
             binding.filterGroupChip.check(viewModel.currentNoteData?.colorGroup?.id!!.toInt())
@@ -95,12 +90,13 @@ class NoteFragment: BaseFragment() {
         binding.inputTextNote.setText(viewModel.currentNoteData?.textNote)
     }
 
-    private fun getCurrentColorGroup(): Long {
+    private fun getCurrentColorGroup(): ColorGroupData? {
         val idChip = binding.filterGroupChip.checkedChipId
         return if (idChip == View.NO_ID){
-            -1
+            null
         } else {
-            binding.filterGroupChip[binding.filterGroupChip.checkedChipId].tag as Long
+            binding.filterGroupChip[binding.filterGroupChip.checkedChipId]
+                .getTag(R.string.tag_chip_color_group) as ColorGroupData
         }
     }
     private fun getTitleNote(): String = binding.inputTitleNote.editText?.text.toString()

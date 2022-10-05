@@ -13,6 +13,8 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="iconTint">@color/white</item>
+        <item name="navigationIconTint">@color/white</item>
+        <item name="navigationIcon">@drawable/ic_sun</item>
         <item name="cardViewStyle">@style/CardView.ItemNote</item>
     </style>
 </resources>

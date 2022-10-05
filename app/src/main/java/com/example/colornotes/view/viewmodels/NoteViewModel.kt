@@ -8,9 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.colornotes.view.model.ColorGroupData
 import com.example.colornotes.view.model.NoteData
 import com.example.colornotes.view.model.SqlRepository
-import com.example.colornotes.view.view.ChipFactory
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -35,7 +33,6 @@ class NoteViewModel: ViewModel() {
     }
 
     fun updateNote(noteData: NoteData, idColorGroup: Long) = viewModelScope.launch{
-        Log.e("TAG", "Current id: ${noteData.colorGroup.id}. Check id: $idColorGroup")
         val colorGroup = if (noteData.colorGroup.id != idColorGroup)
                              getColorGroup(idColorGroup)
                          else
@@ -43,7 +40,6 @@ class NoteViewModel: ViewModel() {
         noteData.colorGroup = colorGroup
         noteData.createDate = Calendar.getInstance().timeInMillis
         SqlRepository.updateNoteData(noteData)
-        Log.e("TAG", "Finish Update")
     }
 
     fun getListGroup() = viewModelScope.launch {
@@ -51,7 +47,7 @@ class NoteViewModel: ViewModel() {
     }
 
     fun getIdColorGroup(): Int =
-        currentNoteData?.colorGroup?.id?.toInt() ?: ChipFactory.DefaultId
+        currentNoteData?.colorGroup?.id?.toInt() ?: 0
 
     private suspend fun getColorGroup(idColorGroup: Long): ColorGroupData =
         withContext(viewModelScope.coroutineContext) {

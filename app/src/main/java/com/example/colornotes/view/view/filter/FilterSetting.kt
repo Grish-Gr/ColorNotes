@@ -4,19 +4,24 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class FilterSetting(
-    var ordinalSortFilter: Int,
-    var ordinalViewFilter: Int,
+    var sortFilter: SortFilter,
+    var viewFilter: ViewFilter,
     var filterGroup: Long? = null
 ): Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readValue(Long::class.java.classLoader) as? Long
+        sortFilter = SortFilter.arraySortFilters[parcel.readInt()],
+        viewFilter = ViewFilter.arrayViewFilters[parcel.readInt()],
+        filterGroup = parcel.readValue(Long::class.java.classLoader) as? Long
     )
 
+    constructor(ordinalSortFilter: Int, ordinalViewFilter: Int, filerGroup: Long?) : this (
+        sortFilter = SortFilter.arraySortFilters[ordinalSortFilter],
+        viewFilter = ViewFilter.arrayViewFilters[ordinalViewFilter],
+        filterGroup = if (filerGroup == NO_FILTER_GROUP) null else filerGroup)
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(ordinalSortFilter)
-        parcel.writeInt(ordinalViewFilter)
+        parcel.writeInt(sortFilter.ordinal)
+        parcel.writeInt(viewFilter.ordinal)
         parcel.writeValue(filterGroup)
     }
 
@@ -24,9 +29,9 @@ data class FilterSetting(
         return 0
     }
 
-    fun byEarly(): Boolean = ordinalSortFilter == 0
-
     companion object CREATOR : Parcelable.Creator<FilterSetting> {
+        const val NO_FILTER_GROUP = -1L
+
         override fun createFromParcel(parcel: Parcel): FilterSetting {
             return FilterSetting(parcel)
         }
@@ -36,6 +41,6 @@ data class FilterSetting(
         }
 
         fun getDefaultFilterSetting(): FilterSetting =
-            FilterSetting(0, 0, null)
+            FilterSetting(SortFilter.TimeEarly, ViewFilter.AllLineFilter, null)
     }
 }

@@ -8,6 +8,7 @@ import com.example.colornotes.view.adapters.TypeHolder
 import com.example.colornotes.view.model.NoteData
 import com.example.colornotes.view.model.SqlRepository
 import com.example.colornotes.view.view.filter.FilterSetting
+import com.example.colornotes.view.view.filter.SortFilter
 import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
@@ -16,7 +17,7 @@ class MainViewModel: ViewModel() {
     val listDataNote: LiveData<List<NoteData>> = _listNote
     var filterSetting = FilterSetting.getDefaultFilterSetting()
 
-    fun getFilterView(): TypeHolder = when(filterSetting.ordinalViewFilter){
+    fun getFilterView(): TypeHolder = when(filterSetting.viewFilter.ordinal){
         0 -> TypeHolder.TYPE_ITEM_LINE
         1 -> TypeHolder.TYPE_ITEM_ALL_LINE
         else -> TypeHolder.TYPE_ITEM_GRID
@@ -26,11 +27,11 @@ class MainViewModel: ViewModel() {
         SqlRepository.deleteNoteData(noteData)
     }
 
-    fun getListNote(colorIdFilter: Long? = null, byEarly: Boolean = true) = viewModelScope.launch {
+    fun getListNote(colorIdFilter: Long? = null, sortFilter: SortFilter = SortFilter.TimeEarly) = viewModelScope.launch {
         if (colorIdFilter == null) {
-            _listNote.postValue(SqlRepository.getListNoteData(byEarly))
+            _listNote.postValue(SqlRepository.getListNoteData(sortFilter))
         } else {
-            _listNote.postValue(SqlRepository.getListNoteData(colorIdFilter, byEarly))
+            _listNote.postValue(SqlRepository.getListNoteData(sortFilter, colorIdFilter))
         }
     }
 }

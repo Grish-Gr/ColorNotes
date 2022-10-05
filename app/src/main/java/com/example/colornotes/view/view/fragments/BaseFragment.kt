@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -59,14 +58,10 @@ open class BaseFragment: Fragment() {
 
     @SuppressLint("CommitPrefEdits")
     protected fun getSaveFilterSetting(): FilterSetting{
-        // TODO Add Default value!
         val sharedPreference = activity?.getSharedPreferences(NAME_SHARED_PREFERENCE, Context.MODE_PRIVATE)
         val filterSorting = sharedPreference?.getInt(KEY_EDIT_FILTER_SORTING, 0) ?: 0
         val filterView = sharedPreference?.getInt(KEY_EDIT_FILTER_VIEW, 0) ?: 0
-        val saveGroup = sharedPreference?.getLong(KEY_EDIT_FILTER_GROUP, -1L)
-        val filterGroup = if (saveGroup == -1L) null
-                          else saveGroup
-        Log.e("TAG", "GET: Sorting: $filterSorting; View: $filterView; Group: $filterGroup")
+        val filterGroup = sharedPreference?.getLong(KEY_EDIT_FILTER_GROUP, FilterSetting.NO_FILTER_GROUP)
         return FilterSetting(filterSorting, filterView, filterGroup)
     }
 
@@ -75,10 +70,9 @@ open class BaseFragment: Fragment() {
         val sharedPreference = activity?.getSharedPreferences(NAME_SHARED_PREFERENCE, Context.MODE_PRIVATE)
         val edit = sharedPreference?.edit()
         with(filterSetting){
-            Log.e("TAG", this.toString())
-            edit?.putInt(KEY_EDIT_FILTER_SORTING, ordinalSortFilter)
-            edit?.putInt(KEY_EDIT_FILTER_VIEW, ordinalViewFilter)
-            edit?.putLong(KEY_EDIT_FILTER_GROUP, filterGroup ?: -1)
+            edit?.putInt(KEY_EDIT_FILTER_SORTING, sortFilter.ordinal)
+            edit?.putInt(KEY_EDIT_FILTER_VIEW, viewFilter.ordinal)
+            edit?.putLong(KEY_EDIT_FILTER_GROUP, filterGroup ?: FilterSetting.NO_FILTER_GROUP)
             edit?.apply()
         }
     }

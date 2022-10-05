@@ -1,10 +1,10 @@
 package com.example.colornotes.view.model
 
-import android.util.Log
+import com.example.colornotes.view.sql.DaoNote
 import com.example.colornotes.view.sql.DatabaseNote
 import com.example.colornotes.view.sql.Note
+import com.example.colornotes.view.view.filter.SortFilter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 
 object SqlRepository {
@@ -16,36 +16,34 @@ object SqlRepository {
         databaseNote = database
     }
 
-    suspend fun getListNoteData(byEarly: Boolean): List<NoteData> = withContext(dispatchersIO){
-        val list = databaseNote.getDao().getListNotes().map { note ->
-            val colorGroup = getColorGroupData(note.color_id)
-            with(note){
-                NoteData(
-                    id_note,
-                    title_note,
-                    text_note,
-                    create_note,
-                    colorGroup
-                )
+    suspend fun getListNoteData(sortFilter: SortFilter, colorIdFilter: Long): List<NoteData> = withContext(dispatchersIO){
+        val list = when (sortFilter){
+            SortFilter.TimeEarly -> databaseNote.getDao().getListNotes(DaoNote.TIME_EARLY, colorIdFilter)
+            SortFilter.TimeOldest -> databaseNote.getDao().getListNotes(DaoNote.TIME_OLDEST, colorIdFilter)
+            SortFilter.AlphabetAZ -> databaseNote.getDao().getListNotes(DaoNote.ALPHABET_A_Z, colorIdFilter)
+            else -> databaseNote.getDao().getListNotes(DaoNote.ALPHABET_Z_A, colorIdFilter)
+        }.map { note ->
+            with(note) {
+                val colorGroup = getColorGroupData(color_id)
+                NoteData(id_note, title_note, text_note, create_note, colorGroup)
             }
         }
-        return@withContext if (byEarly) list.reversed() else list
+        return@withContext list
     }
 
-    suspend fun getListNoteData(colorIdFilter: Long, byEarly: Boolean) : List<NoteData> = withContext(dispatchersIO){
-        val list = databaseNote.getDao().getListNotesByColor(colorIdFilter).map { note ->
-            val colorGroup = getColorGroupData(note.color_id)
-            with(note){
-                NoteData(
-                    id_note,
-                    title_note,
-                    text_note,
-                    create_note,
-                    colorGroup
-                )
+    suspend fun getListNoteData(sortFilter: SortFilter) : List<NoteData> = withContext(dispatchersIO){
+        val list = when (sortFilter){
+            SortFilter.TimeEarly -> databaseNote.getDao().getListNotes(DaoNote.TIME_EARLY)
+            SortFilter.TimeOldest -> databaseNote.getDao().getListNotes(DaoNote.TIME_OLDEST)
+            SortFilter.AlphabetAZ -> databaseNote.getDao().getListNotes(DaoNote.ALPHABET_A_Z)
+            else -> databaseNote.getDao().getListNotes(DaoNote.ALPHABET_Z_A)
+        }.map { note ->
+            with(note) {
+                val colorGroup = getColorGroupData(color_id)
+                NoteData(id_note, title_note, text_note, create_note, colorGroup)
             }
         }
-        return@withContext if (byEarly) list.reversed() else list
+        return@withContext list
     }
 
     suspend fun getListColorGroupData(): List<ColorGroupData> = withContext(dispatchersIO) {

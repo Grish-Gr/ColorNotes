@@ -1,14 +1,13 @@
 package com.example.colornotes.view.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.colornotes.R
 import com.example.colornotes.view.adapters.TypeHolder.*
 import com.example.colornotes.view.adapters.viewholders.AllLineHolder
+import com.example.colornotes.view.adapters.viewholders.BaseViewHolder
 import com.example.colornotes.view.adapters.viewholders.GridHolder
 import com.example.colornotes.view.adapters.viewholders.LineHolder
 import com.example.colornotes.view.model.NoteData
@@ -29,7 +28,6 @@ class MainAdapter(private var typeHolder: TypeHolder): RecyclerView.Adapter<Base
 
     @SuppressLint("NotifyDataSetChanged")
     fun setListNoteData(listNote: List<NoteData>){
-        Log.e("TAG", "Set List")
         listNoteData.clear()
         listNoteData.addAll(listNote)
         notifyDataSetChanged()
@@ -47,7 +45,7 @@ class MainAdapter(private var typeHolder: TypeHolder): RecyclerView.Adapter<Base
         notifyItemRemoved(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when(viewType){
             TYPE_ITEM_LINE.ordinal -> {
                 LineHolder(LayoutInflater

@@ -1,11 +1,10 @@
-package com.example.colornotes.view.adapters
+package com.example.colornotes.view.adapters.viewholders
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.colornotes.databinding.ItemGridBinding
+import com.example.colornotes.view.adapters.ActionClick
+import com.example.colornotes.view.adapters.ActionLongClick
 import com.example.colornotes.view.model.NoteData
-import java.text.DateFormat
 
 abstract class BaseViewHolder(view: View): RecyclerView.ViewHolder(view){
     protected var layoutHolder: View = view

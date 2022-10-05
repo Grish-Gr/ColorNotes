@@ -2,7 +2,6 @@ package com.example.colornotes.view.adapters.viewholders
 
 import android.view.View
 import com.example.colornotes.databinding.ItemLineBinding
-import com.example.colornotes.view.adapters.BaseViewHolder
 import com.example.colornotes.view.model.NoteData
 
 class LineHolder(view: View): BaseViewHolder(view) {

@@ -2,7 +2,6 @@ package com.example.colornotes.view.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 

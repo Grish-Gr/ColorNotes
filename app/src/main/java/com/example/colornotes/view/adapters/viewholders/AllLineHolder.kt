@@ -1,9 +1,7 @@
 package com.example.colornotes.view.adapters.viewholders
 
-import android.util.Log
 import android.view.View
 import com.example.colornotes.databinding.ItemAllLineBinding
-import com.example.colornotes.view.adapters.BaseViewHolder
 import com.example.colornotes.view.model.NoteData
 import java.text.DateFormat
 

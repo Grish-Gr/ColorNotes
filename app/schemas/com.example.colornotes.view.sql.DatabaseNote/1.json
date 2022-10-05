@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0e6d2c971d4fdff80de3e019f3eae388",
+    "identityHash": "a95c0336c434831c39be2943f40fa449",
     "entities": [
       {
         "tableName": "notes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_note` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title_note` TEXT NOT NULL, `text_note` TEXT NOT NULL, `create_date` INTEGER NOT NULL, `color_id` INTEGER NOT NULL, FOREIGN KEY(`color_id`) REFERENCES `color_groups`(`id_color`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id_note` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title_note` TEXT NOT NULL, `text_note` TEXT NOT NULL, `create_date` INTEGER NOT NULL, `color_id` INTEGER NOT NULL, FOREIGN KEY(`color_id`) REFERENCES `color_groups`(`id_color`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id_note",
@@ -45,12 +45,22 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_notes_color_id",
+            "unique": false,
+            "columnNames": [
+              "color_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_notes_color_id` ON `${TABLE_NAME}` (`color_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "color_groups",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
             "columns": [
               "color_id"
             ],
@@ -90,7 +100,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0e6d2c971d4fdff80de3e019f3eae388')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a95c0336c434831c39be2943f40fa449')"
     ]
   }
 }

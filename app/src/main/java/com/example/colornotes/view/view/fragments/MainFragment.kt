@@ -38,7 +38,6 @@ class MainFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //saveTheme()
         initActionView()
         initRecyclerView()
         initLayoutManager()
@@ -83,12 +82,11 @@ class MainFragment: BaseFragment() {
                     showBottomFilerFragment()
                     true
                 }
-                R.id.item_change_theme_app -> {
-                    changeThemeApp()
-                    true
-                }
                 else -> false
             }
+        }
+        binding.mainToolBar.setNavigationOnClickListener {
+            changeThemeApp()
         }
         binding.addNote.setOnClickListener {
             openFragment(NoteFragment())
@@ -129,7 +127,7 @@ class MainFragment: BaseFragment() {
     private fun getListNotesByViewModel() =
         viewModel.getListNote(
             viewModel.filterSetting.filterGroup,
-            viewModel.filterSetting.byEarly())
+            viewModel.filterSetting.sortFilter)
 
     override fun onStop() {
         viewModel.listDataNote.removeObservers(viewLifecycleOwner)
