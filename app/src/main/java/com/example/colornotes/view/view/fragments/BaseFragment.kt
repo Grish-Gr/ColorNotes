@@ -36,8 +36,8 @@ open class BaseFragment: Fragment() {
         bundle.putParcelable(KEY_PUT_DATA, parcelable)
         fragment.arguments = bundle
         fragment.show(parentFragmentManager, TAG_DEFAULT_SHOW_FRAGMENT)
-        fragment.setFragmentResultListener(KEY_RESULT_FRAGMENT) { key, bundle ->
-            listenerResult(key, bundle)
+        fragment.setFragmentResultListener(KEY_RESULT_FRAGMENT) { key, data ->
+            listenerResult(key, data)
         }
     }
 
@@ -98,7 +98,6 @@ open class BaseFragment: Fragment() {
 
         const val NAME_SHARED_PREFERENCE = "DefaultNameSharedPreference"
         const val KEY_EDIT_IS_NIGHT_MODE = "DefaultKeyIsNightMode"
-        const val KEY_EDIT_THEME_MODE = "DefaultKeyThemeMode"
         const val KEY_EDIT_FILTER_SORTING = "DefaultKeyEditFilterSorting"
         const val KEY_EDIT_FILTER_VIEW = "DefaultKeyEditFilterView"
         const val KEY_EDIT_FILTER_GROUP = "DefaultKeyEditFilterGroup"

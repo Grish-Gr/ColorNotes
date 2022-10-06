@@ -18,9 +18,9 @@ class MainViewModel: ViewModel() {
     var filterSetting = FilterSetting.getDefaultFilterSetting()
 
     fun getFilterView(): TypeHolder = when(filterSetting.viewFilter.ordinal){
-        0 -> TypeHolder.TYPE_ITEM_LINE
-        1 -> TypeHolder.TYPE_ITEM_ALL_LINE
-        else -> TypeHolder.TYPE_ITEM_GRID
+        0 -> TypeHolder.TypeItemLine
+        1 -> TypeHolder.TypeItemAllLine
+        else -> TypeHolder.TypeItemGrid
     }
 
     fun deleteNote(noteData: NoteData) = viewModelScope.launch {

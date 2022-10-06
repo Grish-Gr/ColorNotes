@@ -1,5 +1,6 @@
 package com.example.colornotes.view.model
 
+import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
 import java.text.SimpleDateFormat
@@ -23,9 +24,9 @@ data class NoteData(
     ) {
     }
 
-    fun getDate(): Date = Date(createDate)
-    fun getDateByFormat(styleDateFormat: Int): String{
-        val timeFormat = SimpleDateFormat("dd/MM/yyyy")
+    @SuppressLint("SimpleDateFormat")
+    fun getDateByFormat(patternFormat: String = "dd/MM/yyyy"): String{
+        val timeFormat = SimpleDateFormat(patternFormat)
         return timeFormat.format(createDate)
     }
 

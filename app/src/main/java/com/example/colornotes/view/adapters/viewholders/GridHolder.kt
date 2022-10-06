@@ -18,7 +18,7 @@ class GridHolder(view: View): BaseViewHolder(view){
     override fun initView(noteData: NoteData) {
         binding.titleNoteGridItem.text = noteData.titleNote
         binding.textNoteGridItem.text  = noteData.textNote
-        binding.dateNoteGridItem.text  = noteData.getDateByFormat(DateFormat.DAY_OF_YEAR_FIELD)
+        binding.dateNoteGridItem.text  = noteData.getDateByFormat()
         binding.indicatorNoteGridItem.dividerColor = noteData.colorGroup.getColor()
     }
 }

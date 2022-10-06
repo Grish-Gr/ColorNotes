@@ -51,7 +51,6 @@ object SqlRepository {
     }
 
     suspend fun getColorGroupData(idColor: Long): ColorGroupData = withContext(dispatchersIO){
-        //Log.e("TAG", "Request Sql get ColorGroup")
         databaseNote.getDao().getColorGroup(idColor = idColor).getColorGroupData()
     }
 

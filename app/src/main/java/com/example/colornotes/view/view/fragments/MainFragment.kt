@@ -58,9 +58,9 @@ class MainFragment: BaseFragment() {
 
     private fun initLayoutManager(){
         binding.listNotes.layoutManager = when (viewModel.getFilterView()){
-            TYPE_ITEM_LINE, TYPE_ITEM_ALL_LINE -> LinearLayoutManager(
+            TypeItemLine, TypeItemAllLine -> LinearLayoutManager(
                 this.context, RecyclerView.VERTICAL, false)
-            TYPE_ITEM_GRID -> StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+            TypeItemGrid -> StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
         }
     }
 

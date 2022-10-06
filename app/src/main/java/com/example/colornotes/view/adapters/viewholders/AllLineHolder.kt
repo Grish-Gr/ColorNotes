@@ -15,7 +15,7 @@ class AllLineHolder(view: View): BaseViewHolder(view) {
     override fun initView(noteData: NoteData) {
         binding.titleNoteAllLineItem.text = noteData.titleNote
         binding.textNoteAllLineItem.text  = noteData.textNote
-        binding.dateNoteAllLineItem.text  = noteData.getDateByFormat(DateFormat.DAY_OF_YEAR_FIELD)
+        binding.dateNoteAllLineItem.text  = noteData.getDateByFormat()
         binding.indicatorNoteAllLineItem.dividerColor = noteData.colorGroup.getColor()
     }
 }

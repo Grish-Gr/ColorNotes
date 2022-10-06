@@ -47,19 +47,19 @@ class MainAdapter(private var typeHolder: TypeHolder): RecyclerView.Adapter<Base
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when(viewType){
-            TYPE_ITEM_LINE.ordinal -> {
+            TypeItemLine.ordinal -> {
                 LineHolder(LayoutInflater
                     .from(parent.context)
-                    .inflate(TYPE_ITEM_LINE.resLayout, parent, false)
+                    .inflate(TypeItemLine.resLayout, parent, false)
                 )
             }
-            TYPE_ITEM_ALL_LINE.ordinal -> AllLineHolder(LayoutInflater
+            TypeItemAllLine.ordinal -> AllLineHolder(LayoutInflater
                 .from(parent.context)
-                .inflate(TYPE_ITEM_ALL_LINE.resLayout, parent, false)
+                .inflate(TypeItemAllLine.resLayout, parent, false)
             )
             else -> GridHolder(LayoutInflater
                 .from(parent.context)
-                .inflate(TYPE_ITEM_GRID.resLayout, parent, false)
+                .inflate(TypeItemGrid.resLayout, parent, false)
             )
         }
     }
@@ -70,9 +70,9 @@ class MainAdapter(private var typeHolder: TypeHolder): RecyclerView.Adapter<Base
     }
 
     override fun getItemViewType(position: Int): Int = when(typeHolder){
-        TYPE_ITEM_LINE     -> TYPE_ITEM_LINE.ordinal
-        TYPE_ITEM_ALL_LINE -> TYPE_ITEM_ALL_LINE.ordinal
-        TYPE_ITEM_GRID     -> TYPE_ITEM_GRID.ordinal
+        TypeItemLine    -> TypeItemLine.ordinal
+        TypeItemAllLine -> TypeItemAllLine.ordinal
+        TypeItemGrid    -> TypeItemGrid.ordinal
     }
 
     override fun getItemCount(): Int = listNoteData.size
